@@ -2,7 +2,7 @@
 
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 
 import app.keyboards as kb
 
@@ -13,8 +13,13 @@ router = Router()
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await message.reply(f"Привет. \nТвой ID: {message.from_user.id}\nИмя: {message.from_user.first_name}",
-                        reply_markup=await kb.inline_cars())
+                        reply_markup=kb.main)
 
+# если переменная то без await
+# reply_markup=kb.main
+
+# если функция то await
+# reply_markup=await kb.inline_cars()
 # ====================================================================================
 
 @router.message(Command("help"))
@@ -37,3 +42,8 @@ async def get_photo(message: Message):
                                caption="Лого")
 
 # ====================================================================================
+
+@router.callback_query(F.data == "catalog")
+async def catalog(callback: CallbackQuery):
+    await callback.answer("")
+    await callback.message.edit_text("Привет", reply_markup=await kb.inline_cars())
