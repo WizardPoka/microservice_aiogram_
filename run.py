@@ -10,11 +10,10 @@ from config import TOKEN
 
 # ====================================================================================
 
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
-
-
 async def main():
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher()
+
     dp.include_router(router)
     await dp.start_polling(bot)
 
